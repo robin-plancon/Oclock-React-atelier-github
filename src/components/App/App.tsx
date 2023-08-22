@@ -1,26 +1,37 @@
-import logo from '../../assets/logo.svg';
+import React, { useState } from 'react';
 
-import './App.scss';
+// import './App.scss';
+import { Image } from 'semantic-ui-react';
+
+import SearchBar from './SearchBar/SearchBar';
+
+import repos from '../../data/repos';
 
 function App() {
+  const [currentSearch, setSearch] = useState('');
+  // utiliser un state pour savoir si le formulaire a été soumis
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [searchResults, setSearchResults] = useState(repos);
+
   return (
-    <div className="App">
+    <div
+      className="App"
+      style={{
+        width: '90%',
+        height: '100vh',
+        margin: '0 auto',
+        backgroundColor: '#ecf0f1',
+      }}
+    >
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-
-        <p>
-          Edit <code>src/components/App/App.tsx</code> and save to reload.
-        </p>
-
-        <a
-          className="App-link"
-          href="https://react.dev/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Image
+          src="src/assets/images/logo-github.png"
+          size="small"
+          style={{ padding: '1.5rem 0' }}
+          centered
+        />
       </header>
+      <SearchBar currentSearch={currentSearch} setSearch={setSearch} />
     </div>
   );
 }
