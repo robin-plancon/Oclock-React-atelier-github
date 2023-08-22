@@ -100,8 +100,8 @@ function App() {
         <Image
           src="src/assets/images/logo-github.png"
           size="small"
-          style={{ padding: '1.5rem 0' }}
-          centered
+          style={{ display: 'block', margin: '0rem auto', padding: '1rem' }}
+          href="/"
         />
       </header>
       <SearchBar
