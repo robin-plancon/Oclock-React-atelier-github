@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // import './App.scss';
 import { Image } from 'semantic-ui-react';
 
 import SearchBar from './SearchBar/SearchBar';
+import MessageContainer from './Message/Message';
 
 import repos from '../../data/repos';
 
@@ -12,6 +13,12 @@ function App() {
   // utiliser un state pour savoir si le formulaire a été soumis
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [searchResults, setSearchResults] = useState(repos);
+
+  const [messageText, setMessageText] = useState('');
+
+  // useEffect(() => {
+  //   setMessageText('Hello World');
+  // }, []);
 
   return (
     <div
@@ -32,6 +39,7 @@ function App() {
         />
       </header>
       <SearchBar currentSearch={currentSearch} setSearch={setSearch} />
+      {messageText !== '' && <MessageContainer messageText={messageText} />}
     </div>
   );
 }

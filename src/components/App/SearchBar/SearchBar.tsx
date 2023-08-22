@@ -10,7 +10,7 @@ interface SearchBarProps {
 function SearchBar({ currentSearch, setSearch }: SearchBarProps) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(e.currentTarget.search.value);
+    // console.log(e.currentTarget.search.value);
     setSearch(e.currentTarget.search.value);
   };
 
