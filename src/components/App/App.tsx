@@ -24,12 +24,13 @@ function App() {
   // page est le numéro de la page de résultats affichée
   const [page, setPage] = useState(1);
 
+  // Si isSubmitted est true, on lance la requête
   useEffect(() => {
     if (isSubmitted) {
       if (currentSearch === '') {
-        setMessageText('Please enter a search term');
+        setMessageText('Veuillez entrer une recherche');
       } else {
-        // console.log('fetch');
+        // Si la recherche est valide, on lance la requête à l'API
         fetch(
           `https://api.github.com/search/repositories?q=${currentSearch}&sort=stars&order=desc&page=${page}&per_page=9`
         )
@@ -75,6 +76,7 @@ function App() {
     }
   }, [isSubmitted, currentSearch, page]);
 
+  // Si la page change, on modifie la valeur de page
   const handlePageChange = (
     e: React.MouseEvent<HTMLAnchorElement>,
     data: PaginationProps

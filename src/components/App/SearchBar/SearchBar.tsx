@@ -15,7 +15,7 @@ function SearchBar({
 }: SearchBarProps) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log(e.currentTarget.search.value);
+    // lorsque le formulaire est soumis, on passe isSubmitted à true
     setIsSubmitted(true);
   };
 
