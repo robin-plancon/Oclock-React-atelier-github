@@ -36,8 +36,20 @@ function App() {
           .then((response) => response.json())
           .then((data) => {
             // console.log(data);
-            if (data.items.length === 0) {
-              setMessageText('No results');
+            // On vérifie si la propriété items existe dans data
+            if (!data.items) {
+              if (
+                data.message ===
+                'API rate limit exceeded for 90.92.237.244. (But he…t. Check out the documentation for more details.)'
+              ) {
+                setMessageText(
+                  'limite de requêtes atteinte, veuillez réessayer plus tard'
+                );
+              } else if (data.message) {
+                setMessageText(data.message);
+              } else {
+                setMessageText('Pas de résultats');
+              }
             } else {
               setMessageText(
                 `La recherche a donné ${data.total_count} résultats`

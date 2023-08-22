@@ -31,7 +31,7 @@ function SearchBar({
       onSubmit={handleSubmit}
     >
       <Form.Input
-        placeholder="Search..."
+        placeholder="Rechercher un repo"
         name="search"
         icon="search"
         iconPosition="left"

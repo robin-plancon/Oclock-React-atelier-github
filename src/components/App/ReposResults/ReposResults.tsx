@@ -9,7 +9,7 @@ function ReposResults({ reposList }: ReposResultsProps) {
   return (
     <Card.Group itemsPerRow={3} centered style={{ margin: '1rem' }}>
       {reposList.map((repo) => (
-        <Card key={repo.id}>
+        <Card key={repo.id} href={repo.html_url} target="_blank">
           <Image src={repo.owner.avatar_url} wrapped ui={false} />
           <Card.Content>
             <Card.Header>{repo.name}</Card.Header>
