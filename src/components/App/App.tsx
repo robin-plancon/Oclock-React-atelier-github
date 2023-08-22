@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 // import './App.scss';
-import { Image } from 'semantic-ui-react';
+import { Image, Pagination } from 'semantic-ui-react';
 
 import SearchBar from './SearchBar/SearchBar';
 import MessageContainer from './Message/Message';
@@ -11,17 +11,18 @@ import ReposResults from './ReposResults/ReposResults';
 import { Repo } from '../../@types';
 
 function App() {
+  // currentSearch est la valeur de l'input de recherche
   const [currentSearch, setSearch] = useState('');
-  // utiliser un state pour savoir si le formulaire a été soumis
+  // isSubmitted est un boolean qui permet de savoir si le formulaire a été soumis
   const [isSubmitted, setIsSubmitted] = useState(false);
-
+  // messageText est le texte du message du composant Message
   const [messageText, setMessageText] = useState('');
-
+  // reposList est la liste des repos à afficher
   const [reposList, setReposList] = useState<Repo[]>([]);
-
-  // useEffect(() => {
-  //   setMessageText('Hello World');
-  // }, []);
+  // numberOfRepos est le nombre de résultats
+  const [numberOfRepos, setNumberOfRepos] = useState(0);
+  // page est le numéro de la page de résultats affichée
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     if (isSubmitted) {
@@ -36,13 +37,14 @@ function App() {
         )
           .then((response) => response.json())
           .then((data) => {
-            // console.log(data);
+            console.log(data);
             if (data.items.length === 0) {
               setMessageText('No results');
             } else {
               setMessageText(
                 `La recherche a donné ${data.items.length} résultats`
               );
+              setNumberOfRepos(data.total_count);
               setReposList(data.items);
             }
           });
@@ -87,6 +89,14 @@ function App() {
       />
       {messageText !== '' && <MessageContainer messageText={messageText} />}
       <ReposResults reposList={reposList} />
+      {reposList.length > 0 && (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Pagination
+            defaultActivePage={1}
+            totalPages={Math.ceil(numberOfRepos / 9)}
+          />
+        </div>
+      )}
     </div>
   );
 }
