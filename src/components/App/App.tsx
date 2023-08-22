@@ -5,6 +5,7 @@ import { Image } from 'semantic-ui-react';
 
 import SearchBar from './SearchBar/SearchBar';
 import MessageContainer from './Message/Message';
+import ReposResults from './ReposResults/ReposResults';
 
 import repos from '../../data/repos';
 
@@ -16,6 +17,8 @@ function App() {
 
   const [messageText, setMessageText] = useState('');
 
+  const [reposList, setReposList] = useState(repos.items);
+
   // useEffect(() => {
   //   setMessageText('Hello World');
   // }, []);
@@ -25,7 +28,6 @@ function App() {
       className="App"
       style={{
         width: '90%',
-        height: '100vh',
         margin: '0 auto',
         backgroundColor: '#ecf0f1',
       }}
@@ -40,6 +42,7 @@ function App() {
       </header>
       <SearchBar currentSearch={currentSearch} setSearch={setSearch} />
       {messageText !== '' && <MessageContainer messageText={messageText} />}
+      <ReposResults reposList={reposList} />
     </div>
   );
 }
