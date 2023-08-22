@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 // import './App.scss';
-import { Image, Pagination } from 'semantic-ui-react';
+import { Image, Pagination, PaginationProps } from 'semantic-ui-react';
 
 import SearchBar from './SearchBar/SearchBar';
 import MessageContainer from './Message/Message';
@@ -26,23 +26,21 @@ function App() {
 
   useEffect(() => {
     if (isSubmitted) {
-      // console.log('isSubmitted');
       if (currentSearch === '') {
         setMessageText('Please enter a search term');
-        // setReposList(repos.items);
       } else {
         // console.log('fetch');
         fetch(
-          `https://api.github.com/search/repositories?q=${currentSearch}&sort=stars&order=desc&page=1&per_page=9`
+          `https://api.github.com/search/repositories?q=${currentSearch}&sort=stars&order=desc&page=${page}&per_page=9`
         )
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
+            // console.log(data);
             if (data.items.length === 0) {
               setMessageText('No results');
             } else {
               setMessageText(
-                `La recherche a donné ${data.items.length} résultats`
+                `La recherche a donné ${data.total_count} résultats`
               );
               setNumberOfRepos(data.total_count);
               setReposList(data.items);
@@ -63,7 +61,16 @@ function App() {
       }
       setIsSubmitted(false);
     }
-  }, [isSubmitted, currentSearch]);
+  }, [isSubmitted, currentSearch, page]);
+
+  const handlePageChange = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    data: PaginationProps
+  ) => {
+    // console.log(data.activePage);
+    setPage(data.activePage as number);
+    setIsSubmitted(true);
+  };
 
   return (
     <div
@@ -94,6 +101,7 @@ function App() {
           <Pagination
             defaultActivePage={1}
             totalPages={Math.ceil(numberOfRepos / 9)}
+            onPageChange={handlePageChange}
           />
         </div>
       )}
