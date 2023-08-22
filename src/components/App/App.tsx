@@ -7,7 +7,8 @@ import SearchBar from './SearchBar/SearchBar';
 import MessageContainer from './Message/Message';
 import ReposResults from './ReposResults/ReposResults';
 
-import repos from '../../data/repos';
+// import repos from '../../data/repos';
+import { Repo } from '../../@types';
 
 function App() {
   const [currentSearch, setSearch] = useState('');
@@ -16,7 +17,7 @@ function App() {
 
   const [messageText, setMessageText] = useState('');
 
-  const [reposList, setReposList] = useState(repos.items);
+  const [reposList, setReposList] = useState<Repo[]>([]);
 
   // useEffect(() => {
   //   setMessageText('Hello World');
@@ -27,31 +28,36 @@ function App() {
       // console.log('isSubmitted');
       if (currentSearch === '') {
         setMessageText('Please enter a search term');
-        setReposList(repos.items);
+        // setReposList(repos.items);
       } else {
         // console.log('fetch');
-        // fetch(`https://api.github.com/search/repositories?q=${currentSearch}`)
-        //   .then((response) => response.json())
-        //   .then((data) => {
-        //     // console.log(data);
-        //     if (data.items.length === 0) {
-        //       setMessageText('No results');
-        //     } else {
-        //       setReposList(data.items);
-        //     }
-        //   });
-        const filteredRepos = repos.items.filter((repo) => {
-          const regex = new RegExp(currentSearch, 'gi');
-          return repo.name.match(regex);
-        });
-        if (filteredRepos.length === 0) {
-          setMessageText('No results');
-        } else {
-          setMessageText(
-            `La recherche a donné ${filteredRepos.length} résultats`
-          );
-          setReposList(filteredRepos);
-        }
+        fetch(
+          `https://api.github.com/search/repositories?q=${currentSearch}&sort=stars&order=desc&page=1&per_page=9`
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            // console.log(data);
+            if (data.items.length === 0) {
+              setMessageText('No results');
+            } else {
+              setMessageText(
+                `La recherche a donné ${data.items.length} résultats`
+              );
+              setReposList(data.items);
+            }
+          });
+        // const filteredRepos = repos.items.filter((repo) => {
+        //   const regex = new RegExp(currentSearch, 'gi');
+        //   return repo.name.match(regex);
+        // });
+        // if (filteredRepos.length === 0) {
+        //   setMessageText('No results');
+        // } else {
+        //   setMessageText(
+        //     `La recherche a donné ${filteredRepos.length} résultats`
+        //   );
+        //   setReposList(filteredRepos);
+        // }
       }
       setIsSubmitted(false);
     }
