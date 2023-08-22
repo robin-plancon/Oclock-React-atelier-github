@@ -91,6 +91,7 @@ function App() {
       className="App"
       style={{
         width: '90%',
+        maxWidth: '900px',
         minHeight: '100vh',
         margin: '0 auto',
         backgroundColor: '#ecf0f1',
