@@ -13,7 +13,6 @@ function App() {
   const [currentSearch, setSearch] = useState('');
   // utiliser un state pour savoir si le formulaire a été soumis
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [searchResults, setSearchResults] = useState(repos);
 
   const [messageText, setMessageText] = useState('');
 
@@ -22,6 +21,41 @@ function App() {
   // useEffect(() => {
   //   setMessageText('Hello World');
   // }, []);
+
+  useEffect(() => {
+    if (isSubmitted) {
+      // console.log('isSubmitted');
+      if (currentSearch === '') {
+        setMessageText('Please enter a search term');
+        setReposList(repos.items);
+      } else {
+        // console.log('fetch');
+        // fetch(`https://api.github.com/search/repositories?q=${currentSearch}`)
+        //   .then((response) => response.json())
+        //   .then((data) => {
+        //     // console.log(data);
+        //     if (data.items.length === 0) {
+        //       setMessageText('No results');
+        //     } else {
+        //       setReposList(data.items);
+        //     }
+        //   });
+        const filteredRepos = repos.items.filter((repo) => {
+          const regex = new RegExp(currentSearch, 'gi');
+          return repo.name.match(regex);
+        });
+        if (filteredRepos.length === 0) {
+          setMessageText('No results');
+        } else {
+          setMessageText(
+            `La recherche a donné ${filteredRepos.length} résultats`
+          );
+          setReposList(filteredRepos);
+        }
+      }
+      setIsSubmitted(false);
+    }
+  }, [isSubmitted, currentSearch]);
 
   return (
     <div
@@ -40,7 +74,11 @@ function App() {
           centered
         />
       </header>
-      <SearchBar currentSearch={currentSearch} setSearch={setSearch} />
+      <SearchBar
+        currentSearch={currentSearch}
+        setSearch={setSearch}
+        setIsSubmitted={setIsSubmitted}
+      />
       {messageText !== '' && <MessageContainer messageText={messageText} />}
       <ReposResults reposList={reposList} />
     </div>

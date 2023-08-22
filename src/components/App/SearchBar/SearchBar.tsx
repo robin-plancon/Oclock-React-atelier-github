@@ -5,13 +5,18 @@ import { Form } from 'semantic-ui-react';
 interface SearchBarProps {
   currentSearch: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
+  setIsSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function SearchBar({ currentSearch, setSearch }: SearchBarProps) {
+function SearchBar({
+  currentSearch,
+  setSearch,
+  setIsSubmitted,
+}: SearchBarProps) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // console.log(e.currentTarget.search.value);
-    setSearch(e.currentTarget.search.value);
+    setIsSubmitted(true);
   };
 
   return (
